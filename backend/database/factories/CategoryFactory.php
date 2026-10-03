@@ -1,0 +1,36 @@
+<?php
+
+namespace Database\Factories;
+
+use App\Enums\TransactionType;
+use App\Models\Category;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
+
+/**
+ * @extends Factory<Category>
+ */
+class CategoryFactory extends Factory
+{
+    /**
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
+        return [
+            'user_id' => User::factory(),
+            'name' => ucfirst(fake()->unique()->word()).' '.fake()->unique()->numberBetween(1, 99999),
+            'type' => TransactionType::Expense,
+        ];
+    }
+
+    public function income(): static
+    {
+        return $this->state(['type' => TransactionType::Income]);
+    }
+
+    public function expense(): static
+    {
+        return $this->state(['type' => TransactionType::Expense]);
+    }
+}
